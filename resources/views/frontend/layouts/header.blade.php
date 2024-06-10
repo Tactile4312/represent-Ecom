@@ -150,13 +150,14 @@
                                     <div class="bottom">
                                         <div class="total">
                                             <span>Total</span>
-                                            <span class="total-amount">₱{{number_format(Helper::totalCartPrice(),2)}}</span>
+                                            <span class="total-amount">₱{{number_format(Helper::getTotalCartPrice(),2)}}</span>
                                         </div>
                                         <a href="{{route('checkout')}}" class="btn animate">Checkout</a>
                                     </div>
                                 </div>
                             @endauth
                         </div>
+
                     </div>
                 </div>
             </div>
