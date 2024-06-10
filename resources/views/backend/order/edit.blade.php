@@ -15,7 +15,9 @@
         <select name="status" id="status" class="form-control">
           <option value="new" {{ ($order->status == 'new') ? 'selected' : '' }}>New</option>
           <option value="process" {{ ($order->status == 'process') ? 'selected' : '' }}>Processing</option>
-          <option value="delivered" {{ ($order->status == 'delivered') ? 'selected' : '' }}>Delivered</option>
+          {{-- <option value="delivered" {{ ($order->status == 'delivered') ? 'selected' : '' }}>Delivered</option> --}}
+          <option value="ready_to_pickup" {{ ($order->status == 'ready_to_pickup') ? 'selected' : '' }}>Ready To Pickup</option>
+          <option value="claimed" {{ ($order->status == 'claimed') ? 'selected' : '' }}>Claimed</option>
           <option value="cancel" {{ ($order->status == 'cancel') ? 'selected' : '' }}>Cancel</option>
         </select>
       </div>

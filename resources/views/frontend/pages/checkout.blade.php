@@ -27,17 +27,17 @@
         <form class="form" method="POST" action="{{route('cart.order')}}" enctype="multipart/form-data">
             @csrf
             <div class="row">
+
                 <div class="col-lg-8 col-12">
                     <div class="checkout-form">
                         <h2>Complete Your Purchase</h2>
-                        <p>Just a few more steps to complete your purchase securely!</p>
+                        <p>Just a few more steps to complete your purchase securely!!</p>
                         <!-- Form -->
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="first_name">First Name<span>*</span></label>
-                                    <input type="text" name="first_name" id="first_name" placeholder="" value="{{old('first_name')}}" required aria-describedby="firstNameHelp">
-                                    <small id="firstNameHelp" class="form-text text-muted">Enter your first name</small>
+                                    <label>First Name<span>*</span></label>
+                                    <input type="text" name="first_name" placeholder="" value="{{ auth()->user()->first_name ?? old('first_name') }}" required>
                                     @error('first_name')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -45,9 +45,8 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="last_name">Last Name<span>*</span></label>
-                                    <input type="text" name="last_name" id="last_name" placeholder="" value="{{old('last_name')}}" required aria-describedby="lastNameHelp">
-                                    <small id="lastNameHelp" class="form-text text-muted">Enter your last name</small>
+                                    <label>Last Name<span>*</span></label>
+                                    <input type="text" name="last_name" placeholder="" value="{{ auth()->user()->last_name ?? old('last_name') }}" required>
                                     @error('last_name')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -55,9 +54,8 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="email">Email Address<span>*</span></label>
-                                    <input type="email" name="email" id="email" placeholder="" value="{{old('email')}}" required aria-describedby="emailHelp">
-                                    <small id="emailHelp" class="form-text text-muted">Enter your email address</small>
+                                    <label>Email Address<span>*</span></label>
+                                    <input type="email" name="email" placeholder="" value="{{ auth()->user()->email ?? old('email') }}" required>
                                     @error('email')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -65,9 +63,8 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="phone">Phone Number <span>*</span></label>
-                                    <input type="number" name="phone" id="phone" placeholder="" required value="{{old('phone')}}" aria-describedby="phoneHelp">
-                                    <small id="phoneHelp" class="form-text text-muted">Enter your phone number</small>
+                                    <label>Phone Number <span>*</span></label>
+                                    <input type="number" name="phone" placeholder="" required value="{{old('phone')}}">
                                     @error('phone')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -75,57 +72,16 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="country">Country<span>*</span></label>
-                                    <select name="country" id="country" required aria-describedby="countryHelp">
+                                    <label>Country<span>*</span></label>
+                                    <select name="country" id="country" required>
                                         <option value="PH">Philippines</option>
                                     </select>
-                                    <small id="countryHelp" class="form-text text-muted">Select your country</small>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="region">Region<span>*</span></label>
-                                    <select name="region" id="region" class="form-control select2" required aria-describedby="regionHelp">
-                                        <option value="">Select Region</option>
-                                    </select>
-                                    <small id="regionHelp" class="form-text text-muted">Select your region</small>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="province">Province<span>*</span></label>
-                                    <select name="province" id="province" class="form-control select2" required aria-describedby="provinceHelp">
-                                        <option value="">Select Province</option>
-                                    </select>
-                                    <small id="provinceHelp" class="form-text text-muted">Select your province</small>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="city">City<span>*</span></label>
-                                    <select name="city" id="city" class="form-control select2" required aria-describedby="cityHelp">
-                                        <option value="">Select City</option>
-                                    </select>
-                                    <small id="cityHelp" class="form-text text-muted">Select your city</small>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="barangay">Barangay<span>*</span></label>
-                                    <select name="barangay" id="barangay" class="form-control select2" required aria-describedby="barangayHelp">
-                                        <option value="">Select Barangay</option>
-                                    </select>
-                                    <small id="barangayHelp" class="form-text text-muted">Select your barangay</small>
-                                </div>
-                            </div>
-                            <!-- Hidden Field to store full address -->
-                            <input type="hidden" name="full_address" id="full_address">
-
-                            <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-group">
-                                    <label for="address1">Input Your Complete Address <span>*</span></label>
-                                    <input type="text" name="address1" id="address1" placeholder="" value="{{old('address1')}}" aria-describedby="addressHelp" readonly>
-                                    <small id="addressHelp" class="form-text text-muted">Enter your complete address</small>
+                                    <label>Input Your Complete Address <span>*</span></label>
+                                    <input type="text" name="address1" placeholder="" value="{{old('address1')}}">
                                     @error('address1')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -133,9 +89,8 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="post_code">Postal Code</label>
-                                    <input type="text" name="post_code" id="post_code" placeholder="" value="{{old('post_code')}}" aria-describedby="postCodeHelp">
-                                    <small id="postCodeHelp" class="form-text text-muted">Enter your postal code</small>
+                                    <label>Postal Code</label>
+                                    <input type="text" name="post_code" placeholder="" value="{{old('post_code')}}">
                                     @error('post_code')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -163,10 +118,6 @@
                                         }
                                     @endphp
                                     <li class="order_subtotal" data-price="{{ $subtotal }}">Cart Subtotal<span>₱{{ number_format($subtotal, 2) }}</span></li>
-
-                                    @if(session('coupon'))
-                                        <li class="coupon_price" data-price="{{session('coupon')['value']}}">You Save<span>₱{{number_format(session('coupon')['value'],2)}}</span></li>
-                                    @endif
                                     <li class="last" id="order_total_price">Total<span>₱{{number_format($total_amount,2)}}</span></li>
                                 </ul>
                             </div>
@@ -180,6 +131,10 @@
                                     <form-group>
                                         <input name="payment_method" type="radio" value="cod" required> <label> Cash On Delivery</label><br>
                                         <input name="payment_method" type="radio" value="gcash" required> <label> G-Cash Payment</label><br>
+                                        <input name="payment_method" type="radio" value="onsite_payment" required> <label> Onsite Payment</label><br>
+                                        {{-- <input name="payment_method" type="radio" value="paypal"> <label> PayPal</label><br>
+                                        <input name="payment_method" type="radio" value="cardpay" required> <label> Card Payment</label><br>
+ --}}
                                         <!-- Credit Card Details -->
                                         <div id="creditCardDetails" style="display: none;">
                                             <label for="cardNumber">Card Number:</label>
@@ -229,7 +184,6 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('frontend/js/select2/css/select2.min.css') }}">
 <style>
     li.shipping {
         display: inline-flex;
@@ -274,79 +228,32 @@
 @endpush
 
 @push('scripts')
+<script src="{{asset('frontend/js/nice-select/js/jquery.nice-select.min.js')}}"></script>
 <script src="{{ asset('frontend/js/select2/js/select2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        // Initialize Select2
-        $('.select2').select2({
-            placeholder: function() {
-                return $(this).data('placeholder');
-            },
-            allowClear: true
-        });
+        $("select.select2").select2();
+    });
+    $('select.nice-select').niceSelect();
 
-        // Fetch Regions on page load
-        $.getJSON('{{ route("get-regions") }}', function(data) {
-            $('#region').empty().append('<option value="">Select Region</option>');
-            $.each(data, function(key, entry) {
-                $('#region').append($('<option></option>').attr('value', entry.region_code).text(entry.region_name));
-            });
-        });
-
-        // Fetch Provinces based on Region selection
-        $('#region').on('change', function() {
-            let regionCode = $(this).val();
-            $('#province').empty().append('<option value="">Select Province</option>');
-            $('#city').empty().append('<option value="">Select City</option>');
-            $('#barangay').empty().append('<option value="">Select Barangay</option>');
-            if(regionCode) {
-                $.getJSON('{{ route("get-provinces") }}', { region_code: regionCode }, function(data) {
-                    $.each(data, function(key, entry) {
-                        $('#province').append($('<option></option>').attr('value', entry.province_code).text(entry.province_name));
-                    });
-                });
-            }
-        });
-
-        // Fetch Cities based on Province selection
-        $('#province').on('change', function() {
-            let provinceCode = $(this).val();
-            $('#city').empty().append('<option value="">Select City</option>');
-            $('#barangay').empty().append('<option value="">Select Barangay</option>');
-            if(provinceCode) {
-                $.getJSON('{{ route("get-cities") }}', { province_code: provinceCode }, function(data) {
-                    $.each(data, function(key, entry) {
-                        $('#city').append($('<option></option>').attr('value', entry.citymun_code).text(entry.citymun_name));
-                    });
-                });
-            }
-        });
-
-        // Fetch Barangays based on City selection
-        $('#city').on('change', function() {
-            let citymunCode = $(this).val();
-            $('#barangay').empty().append('<option value="">Select Barangay</option>');
-            if(citymunCode) {
-                $.getJSON('{{ route("get-barangays") }}', { citymun_code: citymunCode }, function(data) {
-                    $.each(data, function(key, entry) {
-                        $('#barangay').append($('<option></option>').attr('value', entry.brgy_code).text(entry.brgy_name));
-                    });
-                });
-            }
-        });
-
-        // Update full address field on any selection change
-        function updateFullAddress() {
-            let regionText = $('#region option:selected').text();
-            let provinceText = $('#province option:selected').text();
-            let cityText = $('#city option:selected').text();
-            let barangayText = $('#barangay option:selected').text();
-            let fullAddress = `${barangayText}, ${cityText}, ${provinceText}, ${regionText}`;
-            $('#full_address').val(fullAddress);
-            $('#address1').val(fullAddress);
+    $('input[name="payment_method"]').change(function() {
+        if ($(this).val() === 'cardpay') {
+            $('#creditCardDetails').show();
+            $('#gcashDetails').hide();
+        } else if ($(this).val() === 'gcash') {
+            $('#gcashDetails').show();
+            $('#creditCardDetails').hide();
+        } else {
+            $('#creditCardDetails').hide();
+            $('#gcashDetails').hide();
         }
+    });
 
-        $('#region, #province, #city, #barangay').on('change', updateFullAddress);
+    $('.shipping select[name=shipping]').change(function() {
+        let cost = parseFloat($(this).find('option:selected').data('price')) || 0;
+        let subtotal = parseFloat($('.order_subtotal').data('price'));
+        let coupon = parseFloat($('.coupon_price').data('price')) || 0;
+        $('#order_total_price span').text('₱' + (subtotal + cost - coupon).toFixed(2));
     });
 </script>
 @endpush

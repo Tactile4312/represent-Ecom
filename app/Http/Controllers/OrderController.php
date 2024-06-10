@@ -38,6 +38,7 @@ class OrderController extends Controller
         //
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -49,7 +50,7 @@ class OrderController extends Controller
     $this->validate($request, [
         'first_name' => 'string|required',
         'last_name' => 'string|required',
-        'full_address' => 'string|required', // Validation for full address
+        'address1' => 'string|required',
         'address2' => 'string|nullable',
         'coupon' => 'nullable|numeric',
         'phone' => 'numeric|required',
@@ -74,9 +75,6 @@ class OrderController extends Controller
     $order_data['quantity'] = Helper::cartCount();
     $order_data['total_amount'] = Helper::totalCartPrice();
 
-    // Update address1 with full address
-    $order_data['address1'] = $request->full_address;
-
     if (request('payment_method') == 'paypal') {
         $order_data['payment_method'] = 'paypal';
         $order_data['payment_status'] = 'paid';
@@ -87,7 +85,6 @@ class OrderController extends Controller
         $order_data['payment_method'] = 'gcash';
         $order_data['payment_status'] = 'pending';
 
-        // Handle file upload for G-Cash receipt
         if ($request->hasFile('gcash_receipt')) {
             $receiptName = time() . '.' . $request->gcash_receipt->extension();
             $request->gcash_receipt->move(public_path('receipts'), $receiptName);
@@ -95,6 +92,9 @@ class OrderController extends Controller
         }
 
         $order_data['gcash_reference'] = $request->gcash_reference;
+    } elseif (request('payment_method') == 'onsite_payment') {
+        $order_data['payment_method'] = 'onsite_payment';
+        $order_data['payment_status'] = 'Unpaid';
     } else {
         $order_data['payment_method'] = 'cod';
         $order_data['payment_status'] = 'Unpaid';
@@ -126,6 +126,7 @@ class OrderController extends Controller
         return redirect()->route('home');
     }
 }
+
 
 
     /**
@@ -185,13 +186,27 @@ class OrderController extends Controller
     public function update(Request $request, $id){
     $order = Order::find($id);
     $this->validate($request, [
-        'status' => 'required|in:new,process,delivered,cancel',
+        'status' => 'required|in:new,process,delivered,cancel,ready_to_pickup,claimed',
         'payment_status' => 'required|in:unpaid,pending,paid', // Add validation for payment status
     ]);
 
     $data = $request->all();
 
     if ($request->status == 'delivered') {
+        foreach ($order->cart as $cart) {
+            $product = $cart->product;
+            $product->stock -= $cart->quantity;
+            $product->save();
+        }
+    }
+    if ($request->status == 'ready_to_pickup') {
+        foreach ($order->cart as $cart) {
+            $product = $cart->product;
+            $product->stock -= $cart->quantity;
+            $product->save();
+        }
+    }
+    if ($request->status == 'claimed') {
         foreach ($order->cart as $cart) {
             $product = $cart->product;
             $product->stock -= $cart->quantity;
@@ -314,10 +329,12 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function incomeChart(Request $request)
-    {
+    public function incomeChart(Request $request){
         $year = \Carbon\Carbon::now()->year;
-        $items = Order::with(['cart_info'])->whereYear('created_at', $year)->where('status', 'delivered')->get()
+        $items = Order::with(['cart_info'])
+            ->whereYear('created_at', $year)
+            ->whereIn('status', ['delivered', 'ready_to_pickup', 'claimed'])
+            ->get()
             ->groupBy(function ($d) {
                 return \Carbon\Carbon::parse($d->created_at)->format('m');
             });
@@ -336,6 +353,6 @@ class OrderController extends Controller
             $monthName = date('F', mktime(0, 0, 0, $i, 1));
             $data[$monthName] = (!empty($result[$i])) ? number_format((float)($result[$i]), 2, '.', '') : 0.0;
         }
-        return $data;
+        return response()->json($data);
     }
 }

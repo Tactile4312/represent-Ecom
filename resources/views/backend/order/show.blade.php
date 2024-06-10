@@ -77,14 +77,6 @@
                                     <td> : {{ $order->status }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Shipping Charge</td>
-                                    <td> : ₱{{ $order->shipping ? $order->shipping->price : 'N/A' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Coupon</td>
-                                    <td> : ₱{{ number_format($order->coupon, 2) }}</td>
-                                </tr>
-                                <tr>
                                     <td>Total Amount</td>
                                     <td> : ₱{{ number_format($order->total_amount, 2) }}</td>
                                 </tr>
@@ -99,6 +91,8 @@
                                             Card Payment
                                         @elseif($order->payment_method == 'gcash')
                                             G-Cash Payment
+                                        @elseif($order->payment_method == 'onsite_payment')
+                                            On Site Payment
                                         @endif
                                     </td>
                                 </tr>

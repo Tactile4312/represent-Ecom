@@ -60,6 +60,7 @@ class FrontendController extends Controller
         return view('frontend.pages.product_detail')->with('product_detail',$product_detail);
     }
 
+
     public function productGrids(){
         $products=Product::query();
 
@@ -380,12 +381,16 @@ class FrontendController extends Controller
     public function registerSubmit(Request $request){
         // Validation and user creation logic...
         $this->validate($request, [
-            'name' => 'string|required|min:2',
+            'first_name' => 'string|required|min:2',
+            'middle_name' => 'string|nullable|max:191',
+            'last_name' => 'string|required|min:2',
             'email' => 'string|required|unique:users,email',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:8|confirmed',
         ]);
 
         $data = $request->all();
+        $data['name'] = $data['first_name'] . ' ' . ($data['middle_name'] ? $data['middle_name'] . ' ' : '') . $data['last_name'];
+
         $user = $this->create($data);
 
         if ($user) {
@@ -398,13 +403,17 @@ class FrontendController extends Controller
             return back();
         }
     }
-    public function create(array $data){
+
+    protected function create(array $data)
+    {
         return User::create([
-            'name'=>$data['name'],
-            'email'=>$data['email'],
-            'password'=>Hash::make($data['password']),
-            'status'=>'active'
-            ]);
+            'name' => $data['name'],
+            'first_name' => $data['first_name'],
+            'middle_name' => $data['middle_name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+        ]);
     }
     // Reset password
 

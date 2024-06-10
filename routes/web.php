@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,7 +31,7 @@ Route::get('/get-cities', [LocationController::class, 'getCities'])->name('get-c
 Route::get('/get-barangays', [LocationController::class, 'getBarangays'])->name('get-barangays');
 
 // routes/web.php
-
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 Route::post('/cart/update', [CartController::class, 'cartUpdate'])->name('cart.update');
 
 // routes/web.php

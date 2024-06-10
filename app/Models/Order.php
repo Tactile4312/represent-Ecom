@@ -55,8 +55,8 @@ class Order extends Model
         return $data;
     }
 
-    public static function countDeliveredOrder(){
-        $data = Order::where('status', 'delivered')->count();
+    public static function countsOverallOrder(){
+        $data = Order::whereIn('status', ['delivered', 'ready_to_pickup', 'claimed'])->count();
         return $data;
     }
 
