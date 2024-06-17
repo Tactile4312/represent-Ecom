@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProductCheckedOut;
+use App\Models\Product;
 
 class OrderController extends Controller
 {
@@ -120,12 +121,24 @@ class OrderController extends Controller
             session()->forget('cart');
             session()->forget('coupon');
         }
+
+        // Decrease stock quantity for each product in the cart
+        $cartItems = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->get();
+        foreach ($cartItems as $item) {
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $product->stock -= $item->quantity;
+                $product->save();
+            }
+        }
+
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
         request()->session()->flash('success', 'Your product order has been placed. Thank you for shopping with us.');
         return redirect()->route('home');
     }
 }
+
 
 
 
@@ -183,7 +196,8 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+{
     $order = Order::find($id);
     $this->validate($request, [
         'status' => 'required|in:new,process,delivered,cancel,ready_to_pickup,claimed',
@@ -192,25 +206,13 @@ class OrderController extends Controller
 
     $data = $request->all();
 
-    if ($request->status == 'delivered') {
+    if (in_array($request->status, ['delivered', 'ready_to_pickup', 'claimed'])) {
         foreach ($order->cart as $cart) {
             $product = $cart->product;
-            $product->stock -= $cart->quantity;
-            $product->save();
-        }
-    }
-    if ($request->status == 'ready_to_pickup') {
-        foreach ($order->cart as $cart) {
-            $product = $cart->product;
-            $product->stock -= $cart->quantity;
-            $product->save();
-        }
-    }
-    if ($request->status == 'claimed') {
-        foreach ($order->cart as $cart) {
-            $product = $cart->product;
-            $product->stock -= $cart->quantity;
-            $product->save();
+            if ($product) {
+                $product->stock -= $cart->quantity;
+                $product->save();
+            }
         }
     }
 
@@ -225,7 +227,7 @@ class OrderController extends Controller
         request()->session()->flash('error', 'Error while updating order');
     }
     return redirect()->route('order.index');
-    }
+}
 
     /**
      * Remove the specified resource from storage.
