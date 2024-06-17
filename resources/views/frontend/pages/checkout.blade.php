@@ -129,7 +129,7 @@
                             <div class="content">
                                 <div class="checkbox">
                                     <form-group>
-                                        <input name="payment_method" type="radio" value="cod" required> <label> Cash On Delivery</label><br>
+                                        {{-- <input name="payment_method" type="radio" value="cod" required> <label> Cash On Delivery</label><br> --}}
                                         <input name="payment_method" type="radio" value="gcash" required> <label> G-Cash Payment</label><br>
                                         <input name="payment_method" type="radio" value="onsite_payment" required> <label> Onsite Payment</label><br>
                                         {{-- <input name="payment_method" type="radio" value="paypal"> <label> PayPal</label><br>

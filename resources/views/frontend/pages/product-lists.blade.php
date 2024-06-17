@@ -200,7 +200,7 @@
                                                 <input type="hidden" name="slug" value="{{ $product->slug }}">
                                                 <input type="hidden" name="quant[1]" value="1">
                                                 <p class="des pt-2">{!! html_entity_decode($product->summary) !!}</p>
-                                                <button type="submit" class="btn btn-buy-now" title="Buy Now!">Checkout!</button>
+
                                             </form>
                                         </div>
                                     </div>

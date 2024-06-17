@@ -190,7 +190,7 @@ class ProductController extends Controller
             $products = Product::where('cat_id', $category->id)->paginate(9);
             return view('frontend.pages.product-grids', compact('products', 'recent_products'));
         } else {
-            return redirect()->back()->with('error', 'Category not found');
+            /*  *//* return redirect()->back()->with('error', 'Category not found'); */
         }
     }
 

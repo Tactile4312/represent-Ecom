@@ -4,7 +4,7 @@
 
 @section('main-content')
 <div class="card">
-    <h5 class="card-header">Order<a href="{{ route('order.pdf', $order->id) }}" class="btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-download fa-sm text-white-50"></i> Generate PDF</a></h5>
+    <h5 class="card-header">Order</h5>
     <div class="card-body">
         @if($order)
         <table class="table table-striped table-hover">
@@ -31,22 +31,21 @@
                     <td>₱{{ $order->shipping ? $order->shipping->price : 'N/A' }}</td>
                     <td>₱{{ number_format($order->total_amount, 2) }}</td>
                     <td>
-                        @if($order->status == 'new')
-                        <span class="badge badge-primary">NEW</span>
-                        @elseif($order->status == 'process')
-                        <span class="badge badge-warning">PROCESSING</span>
-                        @elseif($order->status == 'delivered')
-                        <span class="badge badge-success">DELIVERED</span>
+                        @if($order->status=='new')
+                          <span class="badge badge-primary">NEW</span>
+                        @elseif($order->status=='process')
+                          <span class="badge badge-warning">Processssing</span>
+                        @elseif($order->status=='delivered')
+                          {{-- <span class="badge badge-success">Delivered</span> --}}
+                        @elseif($order->status=='ready_to_pickup')
+                          <span class="badge badge-success">Ready To Pick-Up</span>
+                        @elseif($order->status=='claimed')
+                          <span class="badge badge-success">Claimed</span>
                         @else
-                        <span class="badge badge-danger">{{ $order->status }}</span>
+                          <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
                     </td>
                     <td>
-                        <form method="POST" action="{{ route('order.destroy', [$order->id]) }}">
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-danger btn-sm dltBtn" data-id={{ $order->id }} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
                     </td>
                 </tr>
             </tbody>
@@ -88,13 +87,16 @@
                                     <td>:
                                         @if($order->payment_method == 'cod')
                                         Cash on Delivery
-                                        @elseif($order->payment_method == 'paypal')
+                                    @elseif($order->payment_method == 'paypal')
                                         Paypal
-                                        @elseif($order->payment_method == 'cardpay')
+                                    @elseif($order->payment_method == 'cardpay')
                                         Card Payment
-                                        @elseif($order->payment_method == 'gcash')
+                                    @elseif($order->payment_method == 'gcash')
                                         G-Cash Payment
-                                        @endif
+                                    @elseif($order->payment_method == 'onsite_payment')
+                                        On Site Payment
+                                    @endif
+
                                     </td>
                                 </tr>
                                 <tr>

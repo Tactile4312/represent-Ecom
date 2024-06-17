@@ -45,7 +45,11 @@
                         @elseif($order->status=='process')
                           <span class="badge badge-warning">Processssing</span>
                         @elseif($order->status=='delivered')
-                          <span class="badge badge-success">Delivered</span>
+                          {{-- <span class="badge badge-success">Delivered</span> --}}
+                        @elseif($order->status=='ready_to_pickup')
+                          <span class="badge badge-success">Ready To Pick-Up</span>
+                        @elseif($order->status=='claimed')
+                          <span class="badge badge-success">Claimed</span>
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif

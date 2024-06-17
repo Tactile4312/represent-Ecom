@@ -36,10 +36,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $cartItems = Helper::getAllProductFromCart();
+                            @endphp
                             <form action="{{ route('cart.update') }}" method="POST" id="cart-update-form">
                                 @csrf
-                                @if(Helper::getAllProductFromCart())
-                                    @foreach(Helper::getAllProductFromCart() as $key=>$cart)
+                                @if($cartItems && count($cartItems) > 0)
+                                    @foreach($cartItems as $key => $cart)
                                         <tr>
                                             @php
                                                 $photo = explode(',', $cart->product['photo']);
@@ -63,8 +66,8 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td class="text-center">
-                                            There are no any carts available. <a href="{{ route('product-grids') }}" style="color:blue;">Continue shopping</a>
+                                        <td class="text-center" colspan="6">
+                                            You don't have any items in your cart. <a href="{{ route('home') }}" style="color:blue;">Continue shopping</a>
                                         </td>
                                     </tr>
                                 @endif
@@ -96,7 +99,7 @@
                                 <li class="last" id="order_total_price">You Pay<span>₱{{ number_format($total_amount, 2) }}</span></li>
                             </ul>
                             <div class="button5">
-                                <a href="{{ route('checkout') }}" class="btn">Checkout</a>
+                                <a href="{{ route('checkout') }}" class="btn {{ !$cartItems || count($cartItems) == 0 ? 'disabled' : '' }}">Checkout</a>
                                 <a href="{{ route('product-grids') }}" class="btn">Continue shopping</a>
                             </div>
                         </div>
@@ -170,6 +173,12 @@
 
     .form-select .nice-select::after {
         top: 14px;
+    }
+
+    .btn.disabled {
+        pointer-events: none;
+        background-color: #ccc;
+        color: #666;
     }
 </style>
 @endpush

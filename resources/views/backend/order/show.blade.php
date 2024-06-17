@@ -31,14 +31,18 @@
                     <td>₱{{ $order->shipping ? $order->shipping->price : 'N/A' }}</td>
                     <td>₱{{ number_format($order->total_amount, 2) }}</td>
                     <td>
-                        @if($order->status == 'new')
-                            <span class="badge badge-primary">NEW</span>
-                        @elseif($order->status == 'process')
-                            <span class="badge badge-warning">PROCESSING</span>
-                        @elseif($order->status == 'delivered')
-                            <span class="badge badge-success">DELIVERED</span>
+                        @if($order->status=='new')
+                          <span class="badge badge-primary">NEW</span>
+                        @elseif($order->status=='process')
+                          <span class="badge badge-warning">Processssing</span>
+                        @elseif($order->status=='delivered')
+                          {{-- <span class="badge badge-success">Delivered</span> --}}
+                        @elseif($order->status=='ready_to_pickup')
+                          <span class="badge badge-success">Ready To Pick-Up</span>
+                        @elseif($order->status=='claimed')
+                          <span class="badge badge-success">Claimed</span>
                         @else
-                            <span class="badge badge-danger">{{ $order->status }}</span>
+                          <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
                     </td>
                     <td>
