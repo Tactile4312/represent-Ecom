@@ -205,6 +205,13 @@
           <span>Coupon</span></a>
     </li> --}}
      <!-- Users -->
+     <!-- GCash Management -->
+     <li class="nav-item {{ request()->is('admin/gcash') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.gcash.index') }}">
+            <i class="fas fa-money-bill-wave"></i> <!-- Added a relevant icon -->
+            <span>Manage GCash</span>
+        </a>
+    </li>
      <li class="nav-item">
         <a class="nav-link" href="{{route('users.index')}}">
             <i class="fas fa-users"></i>

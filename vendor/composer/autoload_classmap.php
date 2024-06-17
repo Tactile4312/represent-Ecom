@@ -51,6 +51,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Jobs\\GeneratePdfJob' => $baseDir . '/app/Jobs/GeneratePdfJob.php',
     'App\\Mail\\ProductCheckedOut' => $baseDir . '/app/Mail/ProductCheckedOut.php',
+    'App\\Mail\\StockAdded' => $baseDir . '/app/Mail/StockAdded.php',
     'App\\Mail\\UserRegistered' => $baseDir . '/app/Mail/UserRegistered.php',
     'App\\Models\\Banner' => $baseDir . '/app/Models/Banner.php',
     'App\\Models\\Barangay' => $baseDir . '/app/Models/Barangay.php',

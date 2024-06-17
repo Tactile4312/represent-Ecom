@@ -604,6 +604,7 @@ class ComposerStaticInit0fe02967618b6ee54572c79b43d09b09
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Jobs\\GeneratePdfJob' => __DIR__ . '/../..' . '/app/Jobs/GeneratePdfJob.php',
         'App\\Mail\\ProductCheckedOut' => __DIR__ . '/../..' . '/app/Mail/ProductCheckedOut.php',
+        'App\\Mail\\StockAdded' => __DIR__ . '/../..' . '/app/Mail/StockAdded.php',
         'App\\Mail\\UserRegistered' => __DIR__ . '/../..' . '/app/Mail/UserRegistered.php',
         'App\\Models\\Banner' => __DIR__ . '/../..' . '/app/Models/Banner.php',
         'App\\Models\\Barangay' => __DIR__ . '/../..' . '/app/Models/Barangay.php',

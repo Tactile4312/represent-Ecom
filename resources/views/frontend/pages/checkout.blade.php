@@ -123,8 +123,8 @@
                             </div>
                         </div>
                         <!--/ End Order Widget -->
-                        <!-- Order Widget Card Payment -->
-                        <div class="single-widget">
+                         <!-- Order Widget Card Payment -->
+                         <div class="single-widget">
                             <h2>Payment Methods</h2>
                             <div class="content">
                                 <div class="checkbox">
@@ -151,12 +151,23 @@
                                         </div>
 
                                         <!-- G-Cash Details -->
+                                        @php
+                                            $gcash = App\Models\GCashDetail::first();
+                                        @endphp
                                         <div id="gcashDetails" style="display: none;">
                                             <label for="gcashReceipt">Upload Receipt:</label>
                                             <input type="file" id="gcashReceipt" name="gcash_receipt" accept="image/*"><br>
 
                                             <label for="gcashReference">Reference Number:</label>
                                             <input type="text" id="gcashReference" name="gcash_reference"><br>
+
+                                            @if(isset($gcash->qr_code_path))
+                                                <label>Scan QR Code:</label>
+                                                <img src="{{ $gcash->qr_code_path }}" alt="GCash QR" style="max-width: 150px;">
+                                            @endif
+                                            @if(isset($gcash->number))
+                                                <p>GCash Number: {{ $gcash->number }}</p>
+                                            @endif
                                         </div>
                                     </form-group>
                                 </div>

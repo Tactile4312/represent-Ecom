@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\GCashController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -134,6 +135,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/file-manager',function(){
         return view('backend.layouts.file-manager');
     })->name('file-manager');
+    Route::get('gcash', [GCashController::class, 'index'])->name('admin.gcash.index');
+    Route::post('gcash', [GCashController::class, 'update'])->name('admin.gcash.update');
     // user route
     Route::resource('users','UsersController');
     // Banner
