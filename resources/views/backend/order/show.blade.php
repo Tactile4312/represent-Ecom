@@ -41,6 +41,8 @@
                           <span class="badge badge-success">Ready To Pick-Up</span>
                         @elseif($order->status=='claimed')
                           <span class="badge badge-success">Claimed</span>
+                        @elseif($order->status=='pending_cancellation')
+                          <span class="badge badge-warning">Pending Cancellation</span>
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif

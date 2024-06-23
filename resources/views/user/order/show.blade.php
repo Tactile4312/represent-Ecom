@@ -34,18 +34,28 @@
                         @if($order->status=='new')
                           <span class="badge badge-primary">NEW</span>
                         @elseif($order->status=='process')
-                          <span class="badge badge-warning">Processssing</span>
+                          <span class="badge badge-warning">Processing</span>
                         @elseif($order->status=='delivered')
                           {{-- <span class="badge badge-success">Delivered</span> --}}
                         @elseif($order->status=='ready_to_pickup')
                           <span class="badge badge-success">Ready To Pick-Up</span>
                         @elseif($order->status=='claimed')
                           <span class="badge badge-success">Claimed</span>
+                        @elseif($order->status=='pending_cancellation')
+                          <span class="badge badge-warning">Pending Cancellation</span>
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
                     </td>
                     <td>
+                        @if($order->status != 'cancelled' && $order->status != 'claimed' && $order->status != 'delivered' && $order->status != 'pending_cancellation')
+                            <form method="POST" action="{{ route('user.order.requestCancel', $order->id) }}">
+                                @csrf
+                                @method('POST')
+                                <button class="btn btn-danger btn-sm" style="height:30px; width:100%;border-radius:5px;"
+                                    data-toggle="tooltip" title="Request Cancel" data-placement="bottom">Request Cancel</button>
+                            </form>
+                        @endif
                     </td>
                 </tr>
             </tbody>
@@ -96,7 +106,6 @@
                                     @elseif($order->payment_method == 'onsite_payment')
                                         On Site Payment
                                     @endif
-
                                     </td>
                                 </tr>
                                 <tr>
@@ -166,18 +175,16 @@
                                         <td>{{ $cart->product->title }}</td>
                                         <td>{{ $cart->quantity }}</td>
                                         <td>₱{{ number_format($cart->price, 2) }}</td>
-                                    </tr>
                                     @endforeach
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
         @endif
-
     </div>
 </div>
 @endsection
@@ -196,6 +203,5 @@
     .order-products h4 {
         text-decoration: underline;
     }
-
 </style>
 @endpush

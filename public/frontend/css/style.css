@@ -182,7 +182,7 @@ Version:1.0
     font-weight: 500;
     font-size: 14px;
     color: #fff;
-    background: #d6b8f7;
+    background: #5b00bf;
     display: inline-block;
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
@@ -1574,7 +1574,7 @@ Version:1.0
     text-transform: capitalize;
 }
 .small-banner .single-banner a {
-    color: #333;
+    color: #fff;
     margin-top: 22px;
     display: block;
     font-size: 12px;
