@@ -6,6 +6,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\GCashController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\CategoryController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +26,7 @@ Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
 
+
 //locations
 
 // web.php
@@ -29,6 +34,13 @@ Route::get('/get-regions', [LocationController::class, 'getRegions'])->name('get
 Route::get('/get-provinces', [LocationController::class, 'getProvinces'])->name('get-provinces');
 Route::get('/get-cities', [LocationController::class, 'getCities'])->name('get-cities');
 Route::get('/get-barangays', [LocationController::class, 'getBarangays'])->name('get-barangays');
+Route::post('message/{id}/reply', [MessageController::class, 'reply'])->name('message.reply');
+//newlu implements
+Route::post('/user/order/requestCancel/{id}', [OrderController::class, 'requestCancel'])->name('user.order.requestCancel');
+Route::patch('/admin/order/update/{id}', [OrderController::class, 'update'])->name('order.update');
+Route::delete('/category/bulkDelete', [CategoryController::class, 'bulkDelete'])->name('category.bulkDelete');
+
+
 
 // routes/web.php
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
@@ -134,6 +146,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/file-manager',function(){
         return view('backend.layouts.file-manager');
     })->name('file-manager');
+    Route::get('gcash', [GCashController::class, 'index'])->name('admin.gcash.index');
+    Route::post('gcash', [GCashController::class, 'update'])->name('admin.gcash.update');
     // user route
     Route::resource('users','UsersController');
     // Banner

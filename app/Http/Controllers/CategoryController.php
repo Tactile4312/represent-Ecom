@@ -69,6 +69,21 @@ class CategoryController extends Controller
 
     }
 
+    public function bulkDelete(Request $request) {
+        $ids = $request->ids;
+        $categories = Category::whereIn('id', explode(",", $ids))->get();
+
+        foreach ($categories as $category) {
+            if ($category->photo && file_exists(public_path($category->photo))) {
+                unlink(public_path($category->photo));
+            }
+            $category->delete();
+        }
+
+        request()->session()->flash('success', 'Categories successfully deleted');
+        return redirect()->route('category.index');
+    }
+
     /**
      * Display the specified resource.
      *

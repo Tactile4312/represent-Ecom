@@ -18,6 +18,7 @@
           {{-- <option value="delivered" {{ ($order->status == 'delivered') ? 'selected' : '' }}>Delivered</option> --}}
           <option value="ready_to_pickup" {{ ($order->status == 'ready_to_pickup') ? 'selected' : '' }}>Ready To Pickup</option>
           <option value="claimed" {{ ($order->status == 'claimed') ? 'selected' : '' }}>Claimed</option>
+          <option value="pending_cancellation" {{ ($order->status == 'pending_cancellation') ? 'selected' : '' }}>Pending Cancellation</option>
           <option value="cancel" {{ ($order->status == 'cancel') ? 'selected' : '' }}>Cancel</option>
         </select>
       </div>
@@ -42,6 +43,12 @@
         </select>
       </div>
 
+      @if($order->status == 'pending_cancellation')
+      <div class="form-group">
+        <label for="cancel_reason">Cancellation Reason:</label>
+        <textarea name="cancel_reason" id="cancel_reason" class="form-control">{{ $order->cancel_reason }}</textarea>
+      </div>
+      @endif
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
   </div>

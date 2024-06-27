@@ -44,16 +44,20 @@
                                 @if($menu)
                                     @foreach($menu as $cat_info)
                                         @if($cat_info->child_cat->count() > 0)
-                                            <li>
+                                            <li class="@if(request()->is('product-cat/'.$cat_info->slug)) active @endif">
                                                 <a href="{{ route('product-cat', $cat_info->slug) }}">{{ $cat_info->title }}</a>
                                                 <ul>
                                                     @foreach($cat_info->child_cat as $sub_menu)
-                                                        <li><a href="{{ route('product-sub-cat', [$cat_info->slug, $sub_menu->slug]) }}">{{ $sub_menu->title }}</a></li>
+                                                        <li class="@if(request()->is('product-sub-cat/'.$cat_info->slug.'/'.$sub_menu->slug)) active @endif">
+                                                            <a href="{{ route('product-sub-cat', [$cat_info->slug, $sub_menu->slug]) }}">{{ $sub_menu->title }}</a>
+                                                        </li>
                                                     @endforeach
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="{{ route('product-cat', $cat_info->slug) }}">{{ $cat_info->title }}</a></li>
+                                            <li class="@if(request()->is('product-cat/'.$cat_info->slug)) active @endif">
+                                                <a href="{{ route('product-cat', $cat_info->slug) }}">{{ $cat_info->title }}</a>
+                                            </li>
                                         @endif
                                     @endforeach
                                 @endif
@@ -374,6 +378,10 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         color: #fff;
         transform: translateY(-2px);
+    }
+
+    .category .active > a {
+        color: #F7941D;
     }
 </style>
 @endpush

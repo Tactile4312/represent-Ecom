@@ -44,16 +44,20 @@
                                 @if($menu)
                                     @foreach($menu as $cat_info)
                                         @if($cat_info->child_cat->count() > 0)
-                                            <li>
-                                                <a href="{{ route('product-grid-cat', $cat_info->slug) }}" @if(request()->is('product-grid-cat/'.$cat_info->slug)) class="active" @endif>{{ $cat_info->title }}</a>
+                                            <li class="@if(request()->is('product-grid-cat/'.$cat_info->slug)) active @endif">
+                                                <a href="{{ route('product-grid-cat', $cat_info->slug) }}">{{ $cat_info->title }}</a>
                                                 <ul>
                                                     @foreach($cat_info->child_cat as $sub_menu)
-                                                        <li><a href="{{ route('product-grid-sub-cat', [$cat_info->slug, $sub_menu->slug]) }}" @if(request()->is('product-grid-sub-cat/'.$cat_info->slug.'/'.$sub_menu->slug)) class="active" @endif>{{ $sub_menu->title }}</a></li>
+                                                        <li class="@if(request()->is('product-grid-sub-cat/'.$cat_info->slug.'/'.$sub_menu->slug)) active @endif">
+                                                            <a href="{{ route('product-grid-sub-cat', [$cat_info->slug, $sub_menu->slug]) }}">{{ $sub_menu->title }}</a>
+                                                        </li>
                                                     @endforeach
                                                 </ul>
                                             </li>
                                         @else
-                                            <li><a href="{{ route('product-grid-cat', $cat_info->slug) }}" @if(request()->is('product-grid-cat/'.$cat_info->slug)) class="active" @endif>{{ $cat_info->title }}</a></li>
+                                            <li class="@if(request()->is('product-grid-cat/'.$cat_info->slug)) active @endif">
+                                                <a href="{{ route('product-grid-cat', $cat_info->slug) }}">{{ $cat_info->title }}</a>
+                                            </li>
                                         @endif
                                     @endforeach
                                 @endif
@@ -339,6 +343,9 @@
         padding: 8px 16px;
         margin-top: 10px;
         color: white;
+    }
+    .category .active > a {
+        color: #F7941D;
     }
 </style>
 @endpush

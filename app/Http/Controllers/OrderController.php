@@ -196,38 +196,58 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-{
-    $order = Order::find($id);
-    $this->validate($request, [
-        'status' => 'required|in:new,process,delivered,cancel,ready_to_pickup,claimed',
-        'payment_status' => 'required|in:unpaid,pending,paid', // Add validation for payment status
-    ]);
+    public function update(Request $request, $id){
+        $order = Order::find($id);
 
-    $data = $request->all();
+        $this->validate($request, [
+            'status' => 'required|in:new,process,delivered,cancel,ready_to_pickup,claimed,pending_cancellation',
+            'payment_status' => 'required|in:unpaid,pending,paid',
+        ]);
 
-    if (in_array($request->status, ['delivered', 'ready_to_pickup', 'claimed'])) {
-        foreach ($order->cart as $cart) {
-            $product = $cart->product;
-            if ($product) {
-                $product->stock -= $cart->quantity;
-                $product->save();
+        $data = $request->all();
+
+        if (in_array($request->status, ['delivered', 'ready_to_pickup', 'claimed'])) {
+            foreach ($order->cart as $cart) {
+                $product = $cart->product;
+                if ($product) {
+                    $product->stock -= $cart->quantity;
+                    $product->save();
+                }
             }
         }
+
+        $order->status = $data['status'];
+        $order->payment_status = $data['payment_status'];
+
+        if ($order->status == 'pending_cancellation') {
+            $order->cancel_reason = $request->cancel_reason;
+        } else {
+            $order->cancel_reason = null;
+        }
+
+        $status = $order->save();
+
+        if ($status) {
+            request()->session()->flash('success', 'Successfully updated order');
+        } else {
+            request()->session()->flash('error', 'Error while updating order');
+        }
+
+        return redirect()->route('order.index');
     }
 
-    $order->status = $data['status'];
-    $order->payment_status = $data['payment_status'];
 
-    $status = $order->save();
+    public function requestCancel($id)
+    {
+        $order = Order::find($id);
+        if ($order && $order->status != 'cancel' && $order->status != 'claimed' && $order->status != 'delivered') {
+            $order->status = 'pending_cancellation';
+            $order->save();
 
-    if ($status) {
-        request()->session()->flash('success', 'Successfully updated order');
-    } else {
-        request()->session()->flash('error', 'Error while updating order');
+            return redirect()->route('user.order.show', $order->id)->with('success', 'Cancellation request sent successfully');
+        }
+        return redirect()->route('user.order.show', $order->id)->with('error', 'Order cannot be cancelled');
     }
-    return redirect()->route('order.index');
-}
 
     /**
      * Remove the specified resource from storage.
@@ -357,4 +377,5 @@ class OrderController extends Controller
         }
         return response()->json($data);
     }
+
 }

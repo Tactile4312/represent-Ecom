@@ -13,7 +13,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            @if(count($orders)>0)
+            @if(count($orders) > 0)
             <table class="table table-bordered table-hover" id="order-dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -54,6 +54,8 @@
                             <span class="badge badge-warning">PROCESSING</span>
                             @elseif($order->status=='delivered')
                             <span class="badge badge-success">DELIVERED</span>
+                            @elseif($order->status=='pending_cancellation')
+                          <span class="badge badge-warning">Pending Cancellation</span>
                             @else
                             <span class="badge badge-danger">{{ $order->status }}</span>
                             @endif
@@ -102,28 +104,5 @@
             "targets": [8]
         }]
     });
-
-    // Sweet alert
-
-    $('.dltBtn').click(function(e) {
-        var form = $(this).closest('form');
-        var dataID = $(this).data('id');
-        // alert(dataID);
-        e.preventDefault();
-        swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this data!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    form.submit();
-                } else {
-                    swal("Your data is safe!");
-                }
-            });
-    })
 </script>
 @endpush
