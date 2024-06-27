@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 class NotificationController extends Controller
@@ -10,7 +11,7 @@ class NotificationController extends Controller
         return view('backend.notification.index');
     }
     public function show(Request $request){
-        $notification=Auth()->user()->notifications()->where('id',$request->id)->first();
+        $notification=Auth::user()->unreadNotifications->where('id',$request->id)->first();
         if($notification){
             $notification->markAsRead();
             return redirect($notification->data['actionURL']);

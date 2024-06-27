@@ -86,6 +86,8 @@
                                     <label for="password">Your Password<span>*</span></label>
                                     <input type="password" id="password" name="password" placeholder="" required="required">
                                     <small class="form-text text-muted">Password must be at least 8 characters long.</small>
+                                    <div id="password-strength-meter"></div>
+                                    <small id="password-strength-text" class="form-text text-muted"></small>
                                     @error('password')
                                         <span class="text-danger">{{$message}}</span>
                                     @enderror
@@ -170,5 +172,34 @@
         font-size: 12px;
         color: #6c757d;
     }
+    #password-strength-meter {
+        height: 5px;
+        margin-top: 5px;
+    }
 </style>
+@endpush
+
+@push('scripts')
+<!-- Include zxcvbn library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordInput = document.getElementById('password');
+    const meter = document.getElementById('password-strength-meter');
+    const text = document.getElementById('password-strength-text');
+
+    passwordInput.addEventListener('input', function () {
+        const val = passwordInput.value;
+        const result = zxcvbn(val);
+
+        // Update the password strength meter
+        meter.style.width = (result.score + 1) * 20 + '%';
+        meter.style.backgroundColor = ['#ff4b47', '#ffa534', '#ffec3d', '#c5ff37', '#0be881'][result.score];
+
+        // Update the text indicator
+        const strength = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+        text.textContent = 'Strength: ' + strength[result.score];
+    });
+});
+</script>
 @endpush

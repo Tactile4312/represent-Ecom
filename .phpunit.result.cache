@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Tests\\Feature\\ExampleTest::testBasicTest":3,"Tests\\Feature\\PdfGenerationTest::it_generates_hello_world_pdf":3},"times":{"Tests\\Unit\\ExampleTest::testBasicTest":0.006,"Tests\\Feature\\ExampleTest::testBasicTest":0.582,"Tests\\Feature\\PdfGenerationTest::it_generates_hello_world_pdf":0.387}}
