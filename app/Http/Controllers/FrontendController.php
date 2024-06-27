@@ -257,7 +257,6 @@ class FrontendController extends Controller
             $slug=explode(',',$_GET['category']);
             // dd($slug);
             $cat_ids=PostCategory::select('id')->whereIn('slug',$slug)->pluck('id')->toArray();
-            return $cat_ids;
             $post->whereIn('post_cat_id',$cat_ids);
             // return $post;
         }
@@ -357,7 +356,16 @@ class FrontendController extends Controller
     }
     public function loginSubmit(Request $request){
         $data= $request->all();
-        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
+
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // Check if the remember me checkbox is checked
+        $remember = $request->has('remember');
+
+        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'], $remember)) {
             Session::put('user',$data['email']);
             request()->session()->flash('success','Logged in successfully!');
             return redirect()->route('home');

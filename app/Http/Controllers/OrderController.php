@@ -15,6 +15,7 @@ use App\Notifications\StatusNotification;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProductCheckedOut;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -341,7 +342,7 @@ class OrderController extends Controller
     {
         $order = Order::getAllOrder($request->id);
         $file_name = $order->order_number . '-' . $order->first_name . '.pdf';
-        $pdf = PDF::loadView('backend.order.pdf', compact('order'));
+        $pdf = Pdf::loadView('backend.order.pdf', compact('order'));
         return $pdf->download($file_name);
     }
 

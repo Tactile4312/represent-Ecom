@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\GCashController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,10 @@ Route::get('user/logout','FrontendController@logout')->name('user.logout');
 
 
 //locations
+
+
+//testing
+Route::get('/test-pdf', [TestController::class, 'generatePdf'])->name('test.pdf');
 
 // web.php
 Route::get('/get-regions', [LocationController::class, 'getRegions'])->name('get-regions');
